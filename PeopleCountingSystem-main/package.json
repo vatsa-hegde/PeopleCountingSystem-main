@@ -1,0 +1,25 @@
+{
+  "name": "enggfinalproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SilentSaint/EngineeringFinalProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SilentSaint/EngineeringFinalProject/issues"
+  },
+  "homepage": "https://github.com/SilentSaint/EngineeringFinalProject#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "firebase": "^8.6.5",
+    "firebase-admin": "^9.9.0"
+  }
+}
