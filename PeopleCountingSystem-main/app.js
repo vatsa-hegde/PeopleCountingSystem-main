@@ -2,9 +2,12 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 3000;
-var admin = require("firebase-admin");
+const admin = require("firebase-admin");
+const https = require('http');
+const bodyParser = require('body-parser');
+const cons = require('consolidate');
 
-var serviceAccount = require("crowdmanagement-f5374-firebase-adminsdk-f2khz-dfc4442d84.json");
+const serviceAccount = require("crowdmanagement-f5374-firebase-adminsdk-f2khz-e33f789d77.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -12,14 +15,18 @@ admin.initializeApp({
 });
 
 const db = admin.database();
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.engine('html', cons.swig);
+app.set('views', path.join(__dirname, 'public'));
 app.use(express.static(path.join(__dirname, "public")));
+app.set("view engine", "html");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const ref = db.ref('/import/');
-ref.orderByChild('timestamp').startAt(1439922600).endAt(1441391400).once('value', (snapshot) => {
-console.log(snapshot.val());
 
-});
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.get('/monitor',function(req,res){
@@ -27,12 +34,54 @@ app.get('/monitor',function(req,res){
 });
 
 app.get("/ml",function(req,res){
-  const ref = db.ref('/import/');
-  ref.orderByChild('timestamp').startAt(1439922600).endAt(1441391400).once('value', (snapshot) => {
-  console.log(snapshot.val());
-  });
+  res.render("ML")
 });
+
+app.post("/ml",function(req,res){
+  var mall = req.body.mall;
+  var day = req.body.day;
+  var month = req.body.month;
+  var year = req.body.year;
+  var weekend = req.body.weekend;
+  var holiday = req.body.holiday;
+  var dayOfWeek = req.body.dayOfWeek;
+  console.log("in");
+  const data = JSON.stringify({
+  'mall' : mall,
+  'day' : day,
+  'month' : month,
+  'year' : year,
+  'weekend':weekend,
+  'holiday':holiday,
+  'dayOfWeek':dayOfWeek
+});
+const opt = {
+  hostname: 'localhost',
+  port: 5000,
+  path: '/',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': data.length
+  }
+}
+
+const request = https.request(opt, response => {
+  console.log(`statusCode: ${res.statusCode}`)
+
+  response.on('data', d => {
+    process.stdout.write(d)
+    res.send(d.toString());
+  })
 })
+
+request.on('error', error => {
+  console.error(error)
+})
+
+request.write(data)
+request.end()
+});
 
 
 app.listen(port, () => {
