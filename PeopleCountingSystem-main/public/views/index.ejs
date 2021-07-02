@@ -35,7 +35,11 @@
             <a href="#">Contact</a>
           </li>
         </ul>
+        <% if(loggedIn){ %>
+        <a class="btn" href="/auth/logout">Logout</a>
+        <% }else{ %>
         <a class="btn" href="/auth/google">Login</a>
+        <% } %>
       </nav>
       <h1 class="title animate__animated animate__backInLeft">Crowdex</h1>
       <h3 class="sub-title animate__animated animate__backInRight">
@@ -170,7 +174,7 @@
               Eleifend cursus volutpat risus convallis nam sed quam sollicitudin
               eget leo at erat cursus justo
             </p>
-            <a href="#" class="plan__button btn--dark">Join Now</a>
+            <a href="/buy" class="plan__button btn--dark">Join Now</a>
           </div>
 
           <div class="plan plan--accent" data-aos="zoom-in-up">
@@ -180,7 +184,7 @@
               Eleifend cursus volutpat risus convallis nam sed quam sollicitudin
               eget leo at erat cursus justo
             </p>
-            <a href="#" class="plan__button btn--light">Join Now</a>
+            <a href="/buy" class="plan__button btn--light">Join Now</a>
           </div>
           <div class="plan plan--light" data-aos="zoom-in-left">
             <h2 class="plan__title">Enterprise</h2>
@@ -189,7 +193,7 @@
               Eleifend cursus volutpat risus convallis nam sed quam sollicitudin
               eget leo at erat cursus justo
             </p>
-            <a href="#" class="plan__button btn--dark">Join Now</a>
+            <a href="/buy" class="plan__button btn--dark">Join Now</a>
           </div>
         </div>
       </section>

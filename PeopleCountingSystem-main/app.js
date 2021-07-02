@@ -1,23 +1,25 @@
-const express = require("express");
+//core module requires
 const path = require("path");
-const port = process.env.PORT || 3000;
-const admin = require("firebase-admin");
+//express requires
+const express = require("express");
 const bodyParser = require("body-parser");
-const cons = require("consolidate");
-const serviceAccount = require("crowdmanagement-f5374-firebase-adminsdk-f2khz-e33f789d77.json");
+//authentication login
 require("dotenv").config();
 const passport = require("passport");
 const { Strategy } = require("passport-google-oauth20");
-const helmet = require("helmet");
 const cookieSession = require("cookie-session");
+//firebase requires
+const admin = require("firebase-admin");
+const serviceAccount = require("crowdmanagement-f5374-firebase-adminsdk-f2khz-e33f789d77.json");
 
+//config constants
+const PORT = process.env.PORT || 3000;
 const AUTH_CONFIG = {
   CLIENT_ID: process.env.CLIENT_ID,
   CLIENT_SECRET: process.env.CLIENT_SECRET,
   COOKIE_KEY_1: process.env.COOKIE_KEY_1,
   COOKIE_KEY_2: process.env.COOKIE_KEY_2,
 };
-
 const AUTH_OPTIONS = {
   callbackURL: "/auth/google/callback",
   clientID: AUTH_CONFIG.CLIENT_ID,
@@ -25,24 +27,19 @@ const AUTH_OPTIONS = {
 };
 
 function verifyCallback(accessToken, refreshToken, profile, done) {
-  // console.log(`accessToken ${accessToken}`);
   console.log(`Google Profile`, profile);
   done(null, profile);
 }
 
 passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
-
 passport.serializeUser((user, done) => {
   done(null, user);
 });
-
 passport.deserializeUser((userObj, done) => {
   done(null, userObj);
 });
+
 const app = express();
-
-app.use(helmet());
-
 app.use(
   cookieSession({
     name: "session",
@@ -50,9 +47,17 @@ app.use(
     keys: [AUTH_CONFIG.COOKIE_KEY_1, AUTH_CONFIG.COOKIE_KEY_2],
   })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use(express.static(path.join(__dirname, "public")));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "public", "views"));
 /* ---------------------- database ---------------------- */
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -61,17 +66,7 @@ admin.initializeApp({
 });
 
 const db = admin.database();
-app.use(express.static("public"));
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
-
-app.engine("html", cons.swig);
-app.set("views", path.join(__dirname, "public"));
-app.use(express.static(path.join(__dirname, "public")));
-app.set("view engine", "html");
+const ref = db.ref("/");
 
 function checkLoggedIn(req, res, next) {
   const isLoggedIn = req.isAuthenticated() && req.user;
@@ -80,9 +75,19 @@ function checkLoggedIn(req, res, next) {
   }
   next();
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function checkAuthorization(req, res, next) {
+  const users = ref.child("Users");
+  users.child(req.user.email).then(snapshot => {
+    if (!snapshot.exists()) {
+      return res.redirect("/");
+    }
+  });
+  next();
+}
+
+//routes
+
 app.get(
   "/auth/google",
   passport.authenticate("google", {
@@ -105,6 +110,21 @@ app.get("/auth/logout", (req, res) => {
 
 app.get("/failure", (req, res) => {
   res.send("Failed to login");
+});
+
+app.get("/buy", checkLoggedIn, (req, res) => {
+  const users = ref.child("Users");
+  users.child(req.user.email).then(snapshot => {
+    if (!snapshot.exists()) {
+      users.set({
+        email: req.user.email,
+        gotIn: 0,
+        gotOut: 0,
+        ml: {},
+      });
+    }
+  });
+  res.redirect("/");
 });
 
 app.get("/monitor", function (req, res) {
@@ -161,8 +181,17 @@ app.post("/ml", function (req, res) {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile("index.html");
+  if (req.user) {
+    res.render("index", {
+      loggedIn: true,
+    });
+  } else {
+    res.render("index", {
+      loggedIn: false,
+    });
+  }
 });
-app.listen(port, () => {
-  console.log(`🚀🚀Listening on port : ${port}`);
+
+app.listen(PORT, () => {
+  console.log(`🚀🚀Listening on port : ${PORT}`);
 });
