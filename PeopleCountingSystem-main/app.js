@@ -65,6 +65,7 @@ admin.initializeApp({
     "https://crowdmanagement-f5374-default-rtdb.asia-southeast1.firebasedatabase.app",
 });
 
+console.log(process.env.CONFIG);
 const db = admin.database();
 const ref = db.ref("/");
 
@@ -77,7 +78,7 @@ function checkLoggedIn(req, res, next) {
 }
 
 function checkAuthorization(req, res, next) {
-  const users = ref.child("Users");
+  const users = ref.child("/");
   users.child(req.user.email).then(snapshot => {
     if (!snapshot.exists()) {
       return res.redirect("/");
@@ -113,22 +114,29 @@ app.get("/failure", (req, res) => {
 });
 
 app.get("/buy", checkLoggedIn, (req, res) => {
-  const users = ref.child("Users");
-  users.child(req.user.email).then(snapshot => {
-    if (!snapshot.exists()) {
-      users.set({
-        email: req.user.email,
-        gotIn: 0,
-        gotOut: 0,
-        ml: {},
-      });
-    }
+  const users = ref.child("/"+req.user.displayName).set({
+    id: req.user.id,
+    gotIn: 0,
+    gotOut: 0,
+    ml: {}
   });
+  console.log(users);
+  // users.child(req.user.email).then(snapshot => {
+  //   if (!snapshot.exists()) {
+  //     users.set({
+  //       email: req.user.email,
+  //       gotIn: 0,
+  //       gotOut: 0,
+  //       ml: {},
+  //     });
+  //   }
+  // });
   res.redirect("/");
 });
 
 app.get("/monitor", function (req, res) {
-  res.render("monitor");
+  console.log(req.user.displayName);
+  res.render("monitor",{ user : req.user.displayName});
 });
 
 app.get("/ml", checkLoggedIn, function (req, res) {
