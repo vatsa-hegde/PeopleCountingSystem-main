@@ -24,6 +24,8 @@ from firebase_admin import db
 import pandas as pd
 from datetime import datetime
 import time
+import holidays
+in_holidays = holidays.CountryHoliday('IN', prov='KA')
 options = {
 'databaseURL': "https://crowdmanagement-f5374-default-rtdb.asia-southeast1.firebasedatabase.app"
 }
@@ -40,12 +42,16 @@ def Home():
         content = request.get_json()
         mall = content['mall']
         day = content['day']
-        month = content['month']
+        month = int(content['month'])+1
         year = content['year']
-        weekend = content['weekend']
-        holiday = content['holiday']
-        dayOfWeek = content['dayOfWeek']
-        path ="/"+mall+"/"
+        date = datetime(int(year),int(month),int(day))
+        print(date.strftime('%b'))
+        dayOfWeek = date.weekday()
+        holiday = int(date in in_holidays)
+        weekend = 0
+        if dayOfWeek>4:
+            weekend=1
+        path ="/"+mall+"/ML"
         ref = db.reference(path)
         a=ref.get()
         df = pd.DataFrame(list(a))

@@ -11,6 +11,7 @@ const cookieSession = require("cookie-session");
 //firebase requires
 const admin = require("firebase-admin");
 const serviceAccount = require("crowdmanagement-f5374-firebase-adminsdk-f2khz-e33f789d77.json");
+const https = require('http');
 
 //config constants
 const PORT = process.env.PORT || 3000;
@@ -144,32 +145,31 @@ app.get("/ml", checkLoggedIn, function (req, res) {
 });
 
 app.post("/ml", function (req, res) {
-  var mall = req.user.id;
-  var date = req.body.date;
+  var mall = req.user.displayName;
+  var date = new Date(req.body.date);
+  var day = date.getDate()
+ console.log(day)
   console.log(date);
   var month = date.getMonth();
   var year = date.getFullYear();
-  let weekend;
-  if (date.getDay() === 6 || date.getDay() === 0) {
-    weekend = true;
-  } else {
-    weekend = false;
-  }
-  let holiday;
-  if (Math.floor(Math.random() * 2) === 1) {
-    holiday = true;
-  } else {
-    holiday = false;
-  }
+  // let weekend;
+  // if (date.getDay() === 6 || date.getDay() === 0) {
+  //   weekend = 1;
+  // } else {
+  //   weekend = 0;
+  // }
+  // let holiday;
+  // if (Math.floor(Math.random() * 2) === 1) {
+  //   holiday = true;
+  // } else {
+  //   holiday = false;
+  // }
   var dayOfWeek = date.getDay();
   const data = JSON.stringify({
     mall: mall,
     day: day,
     month: month,
-    year: year,
-    weekend: weekend,
-    holiday: holiday,
-    dayOfWeek: dayOfWeek,
+    year: year
   });
   const opt = {
     hostname: "localhost",
