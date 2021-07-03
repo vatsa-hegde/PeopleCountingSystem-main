@@ -114,11 +114,11 @@ app.get("/failure", (req, res) => {
 });
 
 app.get("/buy", checkLoggedIn, (req, res) => {
-  const users = ref.child("/"+req.user.displayName).set({
+  const users = ref.child("/" + req.user.displayName).set({
     id: req.user.id,
     gotIn: 0,
     gotOut: 0,
-    ml: {}
+    ml: {},
   });
   console.log(users);
   // users.child(req.user.email).then(snapshot => {
@@ -136,7 +136,7 @@ app.get("/buy", checkLoggedIn, (req, res) => {
 
 app.get("/monitor", function (req, res) {
   console.log(req.user.displayName);
-  res.render("monitor",{ user : req.user.displayName});
+  res.render("monitor", { user: req.user.displayName });
 });
 
 app.get("/ml", checkLoggedIn, function (req, res) {
@@ -144,14 +144,24 @@ app.get("/ml", checkLoggedIn, function (req, res) {
 });
 
 app.post("/ml", function (req, res) {
-  var mall = req.body.mall;
-  var day = req.body.day;
-  var month = req.body.month;
-  var year = req.body.year;
-  var weekend = req.body.weekend;
-  var holiday = req.body.holiday;
-  var dayOfWeek = req.body.dayOfWeek;
-  console.log("in");
+  var mall = req.user.id;
+  var date = req.body.date;
+  console.log(date);
+  var month = date.getMonth();
+  var year = date.getFullYear();
+  let weekend;
+  if (date.getDay() === 6 || date.getDay() === 0) {
+    weekend = true;
+  } else {
+    weekend = false;
+  }
+  let holiday;
+  if (Math.floor(Math.random() * 2) === 1) {
+    holiday = true;
+  } else {
+    holiday = false;
+  }
+  var dayOfWeek = date.getDay();
   const data = JSON.stringify({
     mall: mall,
     day: day,
