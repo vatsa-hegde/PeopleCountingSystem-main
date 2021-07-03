@@ -22,6 +22,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 import pandas as pd
+import numpy as np
 from datetime import datetime
 import time
 import holidays
@@ -54,9 +55,12 @@ def Home():
         path ="/"+mall+"/ML"
         ref = db.reference(path)
         a=ref.get()
-        df = pd.DataFrame(list(a))
-        x = df.iloc[:,2:7]
-        y = df.iloc[:,0]
+        print(a['0'])
+        df = pd.DataFrame(a)
+        array = np.array(df.T)
+        df1 = pd.DataFrame(array)
+        x = df1.iloc[:,2:7]
+        y = df1.iloc[:,0]
         print(x)
         print(y)
         timestamp = time.mktime(datetime(int(year), int(month), int(day)).timetuple())
