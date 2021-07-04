@@ -23,22 +23,19 @@
       <nav class="nav-container top">
         <ul class="nav-elements-container">
           <li>
-            <a href="/ml">Home</a>
+            <a href="/">Home</a>
           </li>
           <li>
-            <a href="#">About</a>
+            <a href="/monitor">Monitor</a>
           </li>
           <li>
-            <a href="#">Service</a>
-          </li>
-          <li>
-            <a href="#">Contact</a>
+            <a href="/ml">Predict</a>
           </li>
         </ul>
         <% if(loggedIn){ %>
-        <a class="btn" href="/auth/logout">Logout</a>
+        <a class="btn login-button" href="/auth/logout">Logout</a>
         <% }else{ %>
-        <a class="btn" href="/auth/google">Login</a>
+        <a class="btn login-button" href="/auth/google">Login</a>
         <% } %>
       </nav>
       <h1 class="title animate__animated animate__backInLeft">Crowdex</h1>
@@ -107,7 +104,7 @@
               </div>
             </div>
 
-            <h4>Our Plan</h4>
+            <h4>Our Vision</h4>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi et,
               provident cum omnis doloribus eaque iste debitis soluta quasi
@@ -174,7 +171,7 @@
               Eleifend cursus volutpat risus convallis nam sed quam sollicitudin
               eget leo at erat cursus justo
             </p>
-            <a href="/buy" class="plan__button btn--dark">Join Now</a>
+            <a class="plan__button btn--dark">Join Now</a>
           </div>
 
           <div class="plan plan--accent" data-aos="zoom-in-up">
@@ -184,7 +181,7 @@
               Eleifend cursus volutpat risus convallis nam sed quam sollicitudin
               eget leo at erat cursus justo
             </p>
-            <a href="/buy" class="plan__button btn--light">Join Now</a>
+            <a class="plan__button btn--light">Join Now</a>
           </div>
           <div class="plan plan--light" data-aos="zoom-in-left">
             <h2 class="plan__title">Enterprise</h2>
@@ -193,7 +190,7 @@
               Eleifend cursus volutpat risus convallis nam sed quam sollicitudin
               eget leo at erat cursus justo
             </p>
-            <a href="/buy" class="plan__button btn--dark">Join Now</a>
+            <a class="plan__button btn--dark">Join Now</a>
           </div>
         </div>
       </section>
@@ -223,5 +220,20 @@
     <footer>
       <span>Made with <span>❤</span> by coding saints</span>
     </footer>
+    <script>
+      const buyButtons = document.querySelectorAll("a.plan__button");
+      const loginStatusButton = document.querySelector(".login-button");
+      const loginStatus = loginStatusButton.innerText;
+      buyButtons.forEach(buyButton => {
+        buyButton.addEventListener("click", () => {
+          if (loginStatus.trim() === "Login") {
+            alert("Please Login to Continue");
+          } else {
+            alert("Thank you for purchasing");
+            location.href = "http://localhost:3000/buy";
+          }
+        });
+      });
+    </script>
   </body>
 </html>

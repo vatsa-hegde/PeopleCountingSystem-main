@@ -1,0 +1,147 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --btn-color: #14ffec;
+  --hover-states: #0d7377;
+  --primary-color: #212121;
+  --secondary-color: #323232;
+}
+
+@font-face {
+  font-family: roboto;
+  src: url("../fonts/Roboto/Roboto-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: title;
+  src: url("../fonts/Raleway/static/Raleway-Medium.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "all-text";
+  src: url("../fonts/Open_Sans/OpenSans-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: roboto;
+}
+
+p {
+  font-family: all-text;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+/* .header {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-image: url(./../images/829031.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+} */
+
+.header {
+  margin-bottom: 1rem;
+  height: 9vh;
+}
+nav.nav-container {
+  background: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ul {
+  padding-left: 0;
+}
+.nav-elements-container {
+  display: flex;
+  margin-left: auto;
+}
+
+ul > li {
+  list-style: none;
+  margin: 1rem 1rem;
+  font-size: 1.25rem;
+  font-family: roboto;
+}
+
+ul > li > a {
+  color: white;
+}
+
+.btn {
+  font-size: inherit;
+  border: none;
+  outline: none;
+  padding: 0.5em 1em;
+  background-color: white;
+  border-radius: 0.3em;
+  cursor: pointer;
+  color: black;
+}
+
+nav > a {
+  color: white;
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+.top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+footer {
+  background: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+span > span {
+  color: red;
+}
+
+.view {
+  background: linear-gradient(60deg, #141e30, #243b55);
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
