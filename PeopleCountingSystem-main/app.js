@@ -135,13 +135,15 @@ app.get("/buy", checkLoggedIn, (req, res) => {
   res.redirect("/");
 });
 
-app.get("/monitor", function (req, res) {
+app.get("/monitor", checkLoggedIn, function (req, res) {
   console.log(req.user.displayName);
-  res.render("monitor", { user: req.user.displayName });
+  res.render("monitor", { user: req.user.displayName, loggedIn: true });
 });
 
 app.get("/ml", checkLoggedIn, function (req, res) {
-  res.render("ML");
+  res.render("ML", {
+    loggedIn: true,
+  });
 });
 
 app.post("/ml", function (req, res) {

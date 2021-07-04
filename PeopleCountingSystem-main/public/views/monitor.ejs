@@ -5,18 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monitor the crowd</title>
+    <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/animate2.css" />
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
-    <ul>
-      <a href="/index.html"><button>Home</button></a>
-      <a href="#"><button>Contact</button></a>
-    </ul>
-    <center>
-      <pre><h1 class="title animate__animated animate__backInLeft">               Crowdex</h1></pre>
-    </center>
   </head>
   <body>
+    <header class="header">
+      <nav class="nav-container top" style="height: 9vh">
+        <ul class="nav-elements-container">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/monitor">Monitor</a>
+          </li>
+          <li>
+            <a href="/ml">Predict</a>
+          </li>
+        </ul>
+        <% if(loggedIn){ %>
+        <a class="btn" href="/auth/logout">Logout</a>
+        <% }else{ %>
+        <a class="btn" href="/auth/google">Login</a>
+        <% } %>
+      </nav>
+    </header>
     <br /><br /><br /><br /><br />
     <center>
       <h2><pre id="mall"><%= user %></pre></h2>
@@ -36,6 +50,9 @@
         <pre id="people"></pre>
       </h3>
     </center>
+    <footer>
+      <span>Made with <span>❤</span> by coding saints</span>
+    </footer>
     <script type="text/javascript" src="js/monitor.js"></script>
   </body>
 </html>

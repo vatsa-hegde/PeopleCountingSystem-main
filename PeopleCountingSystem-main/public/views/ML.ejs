@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crowdex Predict the Crowd</title>
     <script type="text/javascript" src="js/ML.js"></script>
     <link rel="stylesheet" href="css/animate.css" />
+    <link rel="stylesheet" href="css/header.css" />
   </head>
   <body>
-    <div class="banner-text">
-      <ul>
-        <a href="/index">Home</a>
-        <a href="#">Read me</a>
-        <a href="#">Contact</a>
-      </ul>
-      <h1 class="title animate__animated animate__backInLeft">Crowdex</h1><br>
-    </div>
+    <header class="header">
+      <nav class="nav-container top" style="height: 9vh">
+        <ul class="nav-elements-container">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <li>
+            <a href="/monitor">Monitor</a>
+          </li>
+          <li>
+            <a href="/ml">Predict</a>
+          </li>
+        </ul>
+        <% if(loggedIn){ %>
+        <a class="btn" href="/auth/logout">Logout</a>
+        <% }else{ %>
+        <a class="btn" href="/auth/google">Login</a>
+        <% } %>
+      </nav>
+    </header>
     <div class="animation-area">
       <ul class="box-area">
         <c></c>
@@ -31,8 +44,17 @@
       <form action="/ml" method="post" class="container">
         <h2>Predict your future Crowd</h2>
         <label>Date:</label>
-        <input type="Date" name="date" id="Date" placeholder="Future date to predict"><br><br>
+        <input
+          type="Date"
+          name="date"
+          id="Date"
+          placeholder="Future date to predict"
+        /><br /><br />
         <button type="submit" class="btn">Fetch details</button>
       </form>
+    </div>
+    <footer>
+      <span>Made with <span>❤</span> by coding saints</span>
+    </footer>
   </body>
 </html>

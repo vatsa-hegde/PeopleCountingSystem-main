@@ -12,6 +12,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   font-family: Tahoma, sans-serif;
+  overflow: hidden;
 }
 
 h2 {
@@ -83,7 +84,7 @@ h2 {
   background: rgba(0, 0, 0, 0.5);
   padding: 40px;
 }
-.btn {
+/* .btn {
   background-color: #04aa6d;
   color: white;
   border: none;
@@ -93,7 +94,7 @@ h2 {
 }
 .btn:hover {
   opacity: 1;
-}
+} */
 input[type="text"]:focus {
   background-color: #ddd;
   outline: none;
